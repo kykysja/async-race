@@ -1,4 +1,5 @@
-import { getCarImage, Store } from '../shared/store';
+import { generateCarImage } from '../shared/elem-generators';
+import { Store } from '../shared/store';
 import { BaseComponent } from './base-component';
 
 export class Table extends BaseComponent {
@@ -26,8 +27,8 @@ export class Table extends BaseComponent {
             (winner, index) => `
           <tr>
             <td>${index + 1}</td>
-            <td class="winner-car">${getCarImage(winner.color)}</td>
-            <td style="margin-right: 15px;">${winner.brand} ${winner.model}</td>
+            <td class="winner-car">${generateCarImage(winner.color)}</td>
+            <td style="margin-right: 15px;">${winner.name}</td>
             <td style="text-align: center;">${winner.wins}</td>
             <td style="text-align: center;">${winner.bestTime}</td>
           </tr>

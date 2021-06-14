@@ -1,6 +1,7 @@
 import { BaseComponent } from '../../components/base-component';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
+import { handleCreateBtnClick } from '../../shared/handlers';
 import { Store } from '../../shared/store';
 import { GarageCarsList } from './garage-cars-list';
 
@@ -32,20 +33,12 @@ export class GarageView extends BaseComponent {
     this.createInputName = new Input(['input'], 'create-name', 'text', 'name');
     this.createInputColor = new Input(['input'], 'create-color', 'color', 'color');
     this.createBtn = new Button('Create', ['button', 'create-btn'], 'create-btn', 'submit');
-    /* this.createBtn.elem.addEventListener('submit', async (event) => {
+
+    this.createBtn.elem.addEventListener('click', (event) => {
       event.preventDefault();
-      Store.state.garageCars.push({
-        id:
-      })
-      const car = Object.fromEntries(
-        new Map([...event.target].filter(({ name }) => !!name).map(({ value, name }) => [name, value]))
-      );
-      await createCar(car);
-      await updateStateGarage();
-      document.getElementById('garage').innerHTML = renderGarage();
-      document.getElementById('create-name').value = '';
-      event.target.disabled = true;
-    }); */
+      handleCreateBtnClick();
+    });
+
     this.updateForm = new BaseComponent('form', ['form'], 'update-form');
     this.updateInputName = new Input(['input'], 'update-name', 'text', 'name');
     this.updateInputColor = new Input(['input'], 'update-color', 'color', 'color');

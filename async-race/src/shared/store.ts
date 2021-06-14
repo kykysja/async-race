@@ -1,11 +1,7 @@
-import { carSvg } from '../../public/car-svg';
-
 const base = 'http://127.0.0.1:3000';
 const garage = `${base}/garage`;
 // const engine = `${base}/engine`;
 // const winners = `${base}/winners`;
-
-export const getCarImage = (color: string): string => carSvg(color);
 
 export const getCars = async (page: number, limit = 7) => {
   const response = await fetch(`${garage}?_page=${page}&_limit=${limit}`);
@@ -29,20 +25,16 @@ export abstract class Store {
     garageCars: [
       {
         id: 1,
-        brand: 'BMW',
-        model: 'M5',
+        name: 'BMW M5',
         color: 'green',
         position: 0,
         wins: 1,
         bestTime: 2.45,
         isEngineStarted: false,
-        sortBy: 'wins',
-        sortOrder: '',
       },
       {
         id: 2,
-        brand: 'Kia',
-        model: 'Ceed',
+        name: 'Kia Ceed',
         color: 'red',
         position: 0,
         wins: 0,
@@ -51,8 +43,7 @@ export abstract class Store {
       },
       {
         id: 3,
-        brand: 'Opel',
-        model: 'Omega',
+        name: 'Opel Omega',
         color: 'snow',
         position: 0,
         wins: 0,
@@ -61,8 +52,7 @@ export abstract class Store {
       },
       {
         id: 4,
-        brand: 'Lanos',
-        model: '7',
+        name: 'Lanos 7',
         color: 'blue',
         position: 0,
         wins: 0,
@@ -74,8 +64,7 @@ export abstract class Store {
     winnersCars: [
       {
         id: 1,
-        brand: 'BMW',
-        model: 'M5',
+        name: 'BMW M5',
         color: 'green',
         position: 0,
         wins: 2,
@@ -83,8 +72,7 @@ export abstract class Store {
       },
       {
         id: 3,
-        brand: 'Opel',
-        model: 'Omega',
+        name: 'Opel Omega',
         color: 'Dlue',
         position: 0,
         wins: 1,
@@ -92,8 +80,7 @@ export abstract class Store {
       },
       {
         id: 2,
-        brand: 'Kia',
-        model: 'Ceed',
+        name: 'Kia Ceed',
         color: 'red',
         position: 0,
         wins: 0,
@@ -119,15 +106,4 @@ export abstract class Store {
   static set garageTotalCars(value: number) {
     this.state.garageTotalCars = value;
   }
-
-  /* constructor() {
-    // this.totalCars = 4;
-    // this.cars = null;
-  } */
-  /* get totalCars(): number {
-    return this.totalCars;
-  }
-  set totalCars(value: number) {
-    this.totalCars = value;
-  } */
 }
