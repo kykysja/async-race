@@ -3,8 +3,7 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { addCar, updateCar } from '../../shared/apiRequests';
 import { state } from '../../shared/state';
-import { race } from '../../shared/utils';
-// import { race } from '../../shared/utils';
+import { generateRandonCars, race } from '../../shared/utils';
 import { pagination } from '../pagination';
 import { garage } from './garage';
 
@@ -52,6 +51,8 @@ export class GarageCarsInteractions extends BaseComponent {
       this.handleUpdateBtnClick();
     });
     this.raceBtn.elem.addEventListener('click', this.handleRaceBtnClick);
+    this.resetBtn.elem.addEventListener('click', this.handleResetBtnClick);
+    this.generateBtn.elem.addEventListener('click', this.handleGenerateBtnClick);
   }
 
   render(): void {
@@ -118,6 +119,36 @@ export class GarageCarsInteractions extends BaseComponent {
       message.classList.toggle('visible', true);
     }
     (this.resetBtn.elem as HTMLButtonElement).disabled = false;
+  };
+
+  handleResetBtnClick(event: Event) {
+    console.log('reset', this.resetBtn);
+    (event.target as HTMLButtonElement).disabled = true;
+    // (this.resetBtn.elem as HTMLButtonElement).disabled = true;
+
+    state.garageCars!.map(({ id }) => garage.garageCars.stopDriving(id));
+
+    const message = document.querySelector('.message');
+    message!.classList.toggle('visible', false);
+
+    (document.getElementById('race-btn') as HTMLButtonElement).disabled = false;
+    // (this.raceBtn.elem as HTMLButtonElement).disabled = false;
+  }
+
+  handleGenerateBtnClick = async (): Promise<void> => {
+    (this.generateBtn.elem as HTMLButtonElement).disabled = true;
+    const cars = generateRandonCars();
+
+    await Promise.all(
+      cars.map(async (c) => {
+        await addCar(c);
+      })
+    );
+
+    await state.updateGarageCars();
+
+    garage.render();
+    (this.generateBtn.elem as HTMLButtonElement).disabled = false;
   };
 }
 

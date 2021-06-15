@@ -78,3 +78,34 @@ export const race = async (
 
   return winner;
 };
+
+const models = [
+  'Tesla',
+  'Mersedes',
+  'BMW',
+  'Toyota',
+  'Opel',
+  'Aston Martin',
+  'Porshe',
+  'Ford',
+  'Lanos',
+];
+const names = ['Model S', 'CLK', '7', 'Camry', 'Combi', '9', 'Corsa', 'DB9', 'Cayene'];
+
+const getRandomName = () => {
+  const model = models[Math.floor(Math.random() * models.length)];
+  const name = names[Math.floor(Math.random() * models.length)];
+  return `${model} ${name}`;
+};
+
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
+
+export const generateRandonCars = (count = 100) /* : [{ name: string, color: string }] */ =>
+  new Array(count).fill(1).map(() => ({ name: getRandomName(), color: getRandomColor() }));
