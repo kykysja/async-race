@@ -18,13 +18,7 @@ window.onload = async () => {
   garageView.render();
   garageCarsInteractions.render();
   garage.render();
-  const selectCarButtonsElems: NodeListOf<HTMLButtonElement> =
-    document.querySelectorAll('.select-button');
-
-  selectCarButtonsElems.forEach((button) =>
-    button.addEventListener('click', garage.garageCars.handleSelectBtnClick)
-  );
   winnersView.render();
   pagination.render();
-  pagination.updatePrevNextButtonsView();
+  pagination.updatePrevNextButtons();
 };

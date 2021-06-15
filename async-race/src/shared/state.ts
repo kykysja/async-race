@@ -3,26 +3,27 @@ import { Car } from './types';
 
 export class State {
   view: string;
-  garageCars?: Car[] | null;
+  garageCars?: Car[];
   garageTotalCars: number;
   garagePage: number;
-  winnersCars?: Car[] | null;
+  winnersCars?: Car[];
   winnersTotalCars: number;
   winnersPage: number;
   sortBy? = 'wins';
   sortOrder? = '';
-  animation = {};
+  animation: any;
   selectedCar: Car | null;
 
   constructor() {
     this.view = 'garage';
-    this.garageCars = null;
+    this.garageCars = [];
     this.garageTotalCars = 0;
     this.garagePage = 1;
-    this.winnersCars = null;
+    this.winnersCars = [];
     this.winnersTotalCars = 0;
     this.winnersPage = 1;
     this.selectedCar = null;
+    this.animation = {};
   }
 
   updateGarageCars = async (): Promise<void> => {

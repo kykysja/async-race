@@ -3,6 +3,8 @@ import { Button } from '../../components/button';
 import { Input } from '../../components/input';
 import { addCar, updateCar } from '../../shared/apiRequests';
 import { state } from '../../shared/state';
+import { race } from '../../shared/utils';
+// import { race } from '../../shared/utils';
 import { pagination } from '../pagination';
 import { garage } from './garage';
 
@@ -49,6 +51,7 @@ export class GarageCarsInteractions extends BaseComponent {
       event.preventDefault();
       this.handleUpdateBtnClick();
     });
+    this.raceBtn.elem.addEventListener('click', this.handleRaceBtnClick);
   }
 
   render(): void {
@@ -76,15 +79,8 @@ export class GarageCarsInteractions extends BaseComponent {
 
     await addCar(car);
     await state.updateGarageCars();
-    pagination.updatePrevNextButtonsView();
+    pagination.updatePrevNextButtons();
     garage.render();
-
-    const selectCarButtonsElems: NodeListOf<HTMLButtonElement> =
-      document.querySelectorAll('.select-button');
-
-    selectCarButtonsElems.forEach((button) =>
-      button.addEventListener('click', garage.garageCars.handleSelectBtnClick)
-    );
 
     (this.createInputName.elem as HTMLInputElement).value = '';
     (this.createInputColor.elem as HTMLInputElement).value = '#000000';
@@ -102,13 +98,26 @@ export class GarageCarsInteractions extends BaseComponent {
       }
     }
     await state.updateGarageCars();
-    pagination.updatePrevNextButtonsView();
+    pagination.updatePrevNextButtons();
     garage.render();
 
     (this.updateInputName.elem as HTMLInputElement).disabled = true;
     (this.updateInputColor.elem as HTMLInputElement).disabled = true;
     (this.updateInputName.elem as HTMLButtonElement).disabled = true;
     state.selectedCar = null;
+  };
+
+  handleRaceBtnClick = async (): Promise<void> => {
+    (this.raceBtn.elem as HTMLButtonElement).disabled = true;
+
+    const winner = await race(garage.garageCars.startDriving);
+    // await saveWinner(winner);
+    const message = document.querySelector('.message');
+    if (message) {
+      message.innerHTML = `${winner.name} went first (${winner.time}s)!`;
+      message.classList.toggle('visible', true);
+    }
+    (this.resetBtn.elem as HTMLButtonElement).disabled = false;
   };
 }
 

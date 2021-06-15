@@ -4,6 +4,13 @@ export type Car = {
   color: string;
   position?: number;
   wins?: number;
-  bestTime?: number;
+  time?: number;
   isEngineStarted?: boolean;
+};
+
+export type Winner = {
+  name: string;
+  color: string;
+  id: number;
+  time: number;
 };

@@ -27,7 +27,7 @@ export class Pagination extends BaseComponent {
     this.nextBtn.appendInto('.pagination');
   }
 
-  updatePrevNextButtonsView(): void {
+  updatePrevNextButtons(): void {
     if (state.garagePage * 7 < state.garageTotalCars) {
       (this.nextBtn.elem as HTMLButtonElement).disabled = false;
     } else {
@@ -51,7 +51,7 @@ export class Pagination extends BaseComponent {
       selectCarButtonsElems.forEach((button) =>
         button.addEventListener('click', garage.garageCars.handleSelectBtnClick)
       );
-      this.updatePrevNextButtonsView();
+      this.updatePrevNextButtons();
     }
     if (state.view === 'wins') {
       state.winnersPage++;
@@ -74,7 +74,7 @@ export class Pagination extends BaseComponent {
       selectCarButtonsElems.forEach((button) =>
         button.addEventListener('click', garage.garageCars.handleSelectBtnClick)
       );
-      this.updatePrevNextButtonsView();
+      this.updatePrevNextButtons();
     }
     if (state.view === 'wins') {
       state.winnersPage++;
@@ -82,7 +82,6 @@ export class Pagination extends BaseComponent {
       // garage.render();
 
       // document.getElementById('garage').innerHTML = renderGarage();
-      // break;
     }
   };
 }

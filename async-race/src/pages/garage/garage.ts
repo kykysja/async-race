@@ -1,6 +1,6 @@
 import { BaseComponent } from '../../components/base-component';
 import { state } from '../../shared/state';
-import { GarageCars } from './garage-cars';
+import { GarageCars, handleStartBtnClick, handleStopBtnClick } from './garage-cars';
 
 export class Garage extends BaseComponent {
   garageTotalCars: BaseComponent;
@@ -26,6 +26,27 @@ export class Garage extends BaseComponent {
     this.garageCars.appendInto('#garage');
     this.garageCars.render();
     this.message.appendInto('.garage-view');
+
+    const selectCarButtonsElems: NodeListOf<HTMLButtonElement> =
+      document.querySelectorAll('.select-button');
+    selectCarButtonsElems.forEach((button) =>
+      button.addEventListener('click', this.garageCars.handleSelectBtnClick)
+    );
+    const removeCarButtonsElems: NodeListOf<HTMLButtonElement> =
+      document.querySelectorAll('.remove-button');
+    removeCarButtonsElems.forEach((button) =>
+      button.addEventListener('click', this.garageCars.removeCar)
+    );
+    const startEngineButtonsElems: NodeListOf<HTMLButtonElement> =
+      document.querySelectorAll('.start-engine-button');
+    startEngineButtonsElems.forEach((button) =>
+      button.addEventListener('click', handleStartBtnClick)
+    );
+    const stopEngineButtonsElems: NodeListOf<HTMLButtonElement> =
+      document.querySelectorAll('.stop-engine-button');
+    stopEngineButtonsElems.forEach((button) =>
+      button.addEventListener('click', handleStopBtnClick)
+    );
   }
 }
 

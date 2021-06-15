@@ -2,7 +2,7 @@ import { Car } from './types';
 
 const base = 'http://127.0.0.1:3000';
 const garage = `${base}/garage`;
-// const engine = `${base}/engine`;
+const engine = `${base}/engine`;
 // const winners = `${base}/winners`;
 
 export const getCurrentPageCars = async (
@@ -46,3 +46,17 @@ export const updateCar = async (id: number, body: { name: string; color: string 
       },
     })
   ).json();
+
+export const deleteCar = async (id: number) =>
+  (await fetch(`${garage}/${id}`, { method: 'DELETE' })).json();
+
+export const startEngine = async (id: number) =>
+  (await fetch(`${engine}?id=${id}&status=started`)).json();
+
+export const drive = async (id: number) => {
+  const res = await fetch(`${engine}?id=${id}&status=drive`).catch();
+  return res.status !== 200 ? { success: false } : { ...(await res.json()) };
+};
+
+export const stopEngine = async (id: number): Promise<void> =>
+  (await fetch(`${engine}?id=${id}&status=stopped`)).json();
