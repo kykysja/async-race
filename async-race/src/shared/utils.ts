@@ -1,5 +1,4 @@
 import { state } from './state';
-import { Winner } from './types';
 
 export function getPosition(element: HTMLElement): { x: number; y: number } {
   const { top, left, width, height } = element.getBoundingClientRect();
@@ -42,7 +41,7 @@ export function animation(
 
 export const raceAll = async (
   promises: Promise<{
-    success: any;
+    success: boolean;
     id: number;
     time: number;
   }>[],
@@ -59,6 +58,7 @@ export const raceAll = async (
     const restIds = [...ids.slice(0, failedIndex), ...ids.slice(failedIndex + 1, ids.length)];
     return raceAll(restPromises, restIds);
   }
+
   return { ...state.garageCars!.find((car) => car.id === id), time: +(time / 1000).toFixed(2) };
 };
 
@@ -68,7 +68,7 @@ export const race = async (
     id: number;
     time: number;
   }>
-): Promise<Winner> => {
+) /* : Promise<Winner> */ => {
   const promises = state.garageCars!.map(({ id }) => action(id));
 
   const winner = await raceAll(

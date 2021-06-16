@@ -1,7 +1,7 @@
 import { BaseComponent } from '../../components/base-component';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
-import { addCar, updateCar } from '../../shared/apiRequests';
+import { addCar, saveWinner, updateCar } from '../../shared/apiRequests';
 import { state } from '../../shared/state';
 import { generateRandonCars, race } from '../../shared/utils';
 import { pagination } from '../pagination';
@@ -50,9 +50,6 @@ export class GarageCarsInteractions extends BaseComponent {
       event.preventDefault();
       this.handleUpdateBtnClick();
     });
-    this.raceBtn.elem.addEventListener('click', this.handleRaceBtnClick);
-    this.resetBtn.elem.addEventListener('click', this.handleResetBtnClick);
-    this.generateBtn.elem.addEventListener('click', this.handleGenerateBtnClick);
   }
 
   render(): void {
@@ -70,6 +67,10 @@ export class GarageCarsInteractions extends BaseComponent {
     this.raceBtn.appendInto('.race-controls');
     this.resetBtn.appendInto('.race-controls');
     this.generateBtn.appendInto('.race-controls');
+
+    this.raceBtn.elem.addEventListener('click', this.handleRaceBtnClick);
+    this.resetBtn.elem.addEventListener('click', this.handleResetBtnClick);
+    this.generateBtn.elem.addEventListener('click', this.handleGenerateBtnClick);
   }
 
   handleCreateBtnClick = async (): Promise<void> => {
@@ -112,17 +113,19 @@ export class GarageCarsInteractions extends BaseComponent {
     (this.raceBtn.elem as HTMLButtonElement).disabled = true;
 
     const winner = await race(garage.garageCars.startDriving);
-    // await saveWinner(winner);
+
+    await saveWinner(winner.id, winner.time);
+
+    (this.resetBtn.elem as HTMLButtonElement).disabled = false;
+
     const message = document.querySelector('.message');
     if (message) {
       message.innerHTML = `${winner.name} went first (${winner.time}s)!`;
       message.classList.toggle('visible', true);
     }
-    (this.resetBtn.elem as HTMLButtonElement).disabled = false;
   };
 
   handleResetBtnClick(event: Event) {
-    console.log('reset', this.resetBtn);
     (event.target as HTMLButtonElement).disabled = true;
     // (this.resetBtn.elem as HTMLButtonElement).disabled = true;
 

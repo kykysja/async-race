@@ -1,5 +1,12 @@
 import { BaseComponent } from '../../components/base-component';
-import { deleteCar, drive, getCar, startEngine, stopEngine } from '../../shared/apiRequests';
+import {
+  deleteCar,
+  deleteWinner,
+  drive,
+  getCar,
+  startEngine,
+  stopEngine,
+} from '../../shared/apiRequests';
 import { generateCar } from '../../shared/elem-generators';
 import { state } from '../../shared/state';
 import { animation, getDistance } from '../../shared/utils';
@@ -91,7 +98,7 @@ export class GarageCars extends BaseComponent {
     const id = +(event.target as HTMLButtonElement).id.split('remove-car-')[1];
 
     await deleteCar(id);
-    // await deleteWinner(id);
+    await deleteWinner(id);
     await state.updateGarageCars();
     garage.render();
   };

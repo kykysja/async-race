@@ -14,3 +14,28 @@ export type Winner = {
   id: number;
   time: number;
 };
+
+export type IdTimeObj = {
+  id: number;
+  time: number;
+};
+
+export type Winners = {
+  [index: number]: WinnerData;
+};
+
+export type WinnerData = {
+  id: number;
+  wins: number;
+  time: number;
+  car: {
+    name: string;
+    color: string;
+    id: number;
+  };
+};
+
+export type GetWinners = {
+  items: WinnerData[];
+  count: number;
+};

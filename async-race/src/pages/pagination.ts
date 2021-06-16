@@ -1,9 +1,8 @@
 import { BaseComponent } from '../components/base-component';
 import { Button } from '../components/button';
-// import { handleSelectBtnClick } from '../shared/handlers';
-// import { handleNextPageBtnClick, handleSelectBtnClick } from '../shared/handlers';
 import { state } from '../shared/state';
 import { garage } from './garage/garage';
+import { winnersView } from './winners/winners-view';
 
 export class Pagination extends BaseComponent {
   prevBtn: Button;
@@ -28,15 +27,29 @@ export class Pagination extends BaseComponent {
   }
 
   updatePrevNextButtons(): void {
-    if (state.garagePage * 7 < state.garageTotalCars) {
-      (this.nextBtn.elem as HTMLButtonElement).disabled = false;
-    } else {
-      (this.nextBtn.elem as HTMLButtonElement).disabled = true;
+    if (state.view === 'garage') {
+      if (state.garagePage * 7 < state.garageTotalCars) {
+        (this.nextBtn.elem as HTMLButtonElement).disabled = false;
+      } else {
+        (this.nextBtn.elem as HTMLButtonElement).disabled = true;
+      }
+      if (state.garagePage > 1) {
+        (this.prevBtn.elem as HTMLButtonElement).disabled = false;
+      } else {
+        (this.prevBtn.elem as HTMLButtonElement).disabled = true;
+      }
     }
-    if (state.garagePage > 1) {
-      (this.prevBtn.elem as HTMLButtonElement).disabled = false;
-    } else {
-      (this.prevBtn.elem as HTMLButtonElement).disabled = true;
+    if (state.view === 'wins') {
+      if (state.winnersPage * 10 < state.winnersTotalCars) {
+        (this.nextBtn.elem as HTMLButtonElement).disabled = false;
+      } else {
+        (this.nextBtn.elem as HTMLButtonElement).disabled = true;
+      }
+      if (state.winnersPage > 1) {
+        (this.prevBtn.elem as HTMLButtonElement).disabled = false;
+      } else {
+        (this.prevBtn.elem as HTMLButtonElement).disabled = true;
+      }
     }
   }
 
@@ -55,11 +68,8 @@ export class Pagination extends BaseComponent {
     }
     if (state.view === 'wins') {
       state.winnersPage++;
-      // await state.updateWinnersCars();
-      // garage.render();
-
-      // document.getElementById('garage').innerHTML = renderGarage();
-      // break;
+      await state.updateWinnersCars();
+      winnersView.render();
     }
   };
 
@@ -77,11 +87,9 @@ export class Pagination extends BaseComponent {
       this.updatePrevNextButtons();
     }
     if (state.view === 'wins') {
-      state.winnersPage++;
-      // await state.updateWinnersCars();
-      // garage.render();
-
-      // document.getElementById('garage').innerHTML = renderGarage();
+      state.winnersPage--;
+      await state.updateWinnersCars();
+      winnersView.render();
     }
   };
 }

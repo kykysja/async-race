@@ -1,6 +1,8 @@
 import { BaseComponent } from '../components/base-component';
 import { Button } from '../components/button';
+import { state } from '../shared/state';
 import { garageView } from './garage/garage-view';
+import { pagination } from './pagination';
 import { winnersView } from './winners/winners-view';
 
 export class PageNavigationButtons extends BaseComponent {
@@ -23,11 +25,15 @@ export class PageNavigationButtons extends BaseComponent {
     this.garageViewBtn.elem.addEventListener('click', () => {
       winnersView.elem.style.display = 'none';
       garageView.elem.style.display = 'block';
-      garageView.render();
+      state.view = 'garage';
+      pagination.updatePrevNextButtons();
     });
-    this.winnersViewBtn.elem.addEventListener('click', () => {
+    this.winnersViewBtn.elem.addEventListener('click', async () => {
       garageView.elem.style.display = 'none';
       winnersView.elem.style.display = 'block';
+
+      await state.updateWinnersCars();
+      state.view = 'wins';
       winnersView.render();
     });
   }

@@ -1,28 +1,20 @@
-import { getCurrentPageCars } from './apiRequests';
-import { Car } from './types';
+import { getCurrentPageCars, getWinners } from './apiRequests';
+import { Car, WinnerData } from './types';
 
 export class State {
-  view: string;
-  garageCars?: Car[];
-  garageTotalCars: number;
-  garagePage: number;
-  winnersCars?: Car[];
-  winnersTotalCars: number;
-  winnersPage: number;
-  sortBy? = 'wins';
-  sortOrder? = '';
+  view = 'garage';
+  garageCars: Car[] = [];
+  garageTotalCars = 0;
+  garagePage = 1;
+  winnersCars: WinnerData[] = [];
+  winnersTotalCars = 0;
+  winnersPage = 1;
+  sortBy = 'wins';
+  sortOrder = 'asc';
   animation: any;
-  selectedCar: Car | null;
+  selectedCar: Car | null = null;
 
   constructor() {
-    this.view = 'garage';
-    this.garageCars = [];
-    this.garageTotalCars = 0;
-    this.garagePage = 1;
-    this.winnersCars = [];
-    this.winnersTotalCars = 0;
-    this.winnersPage = 1;
-    this.selectedCar = null;
     this.animation = {};
   }
 
@@ -31,14 +23,13 @@ export class State {
     this.garageCars = garageCars;
     if (garageTotalCars !== null) this.garageTotalCars = +garageTotalCars;
   };
+
+  updateWinnersCars = async () => {
+    const { items, count } = await getWinners(this.winnersPage, this.sortBy!, this.sortOrder!);
+
+    this.winnersCars = items;
+    this.winnersTotalCars = +count;
+  };
 }
 
 export const state = new State();
-
-/* static updateGaragePage(): void {
-    if (this.garageTotalCars / 7 >= this.garagePage) {
-      this.garagePage++;
-    } else {
-      this.garagePage = 1;
-    }
-  } */

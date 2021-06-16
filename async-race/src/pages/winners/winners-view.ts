@@ -1,28 +1,31 @@
 import { BaseComponent } from '../../components/base-component';
-import { Table } from '../../components/table';
+import { WinnersTable } from '../../components/table';
 import { state } from '../../shared/state';
+import { pagination } from '../pagination';
 
 export class WinnersView extends BaseComponent {
   winnersTotalCars: BaseComponent;
   winnersPage: BaseComponent;
-  winnersTable: Table;
+  winnersTable: WinnersTable;
 
   constructor() {
     super('div', ['winners-view']);
 
     this.elem.style.display = 'none';
-
     this.winnersTotalCars = new BaseComponent('h1', ['winners-total-cars']);
-    this.winnersTotalCars.elem.innerText = `Winners (${state.winnersTotalCars})`;
     this.winnersPage = new BaseComponent('h2', ['winners-page']);
-    this.winnersPage.elem.innerText = `Page #${state.winnersPage}`;
-    this.winnersTable = new Table();
+    this.winnersTable = new WinnersTable();
   }
+
   render(): void {
     this.appendInto('.winners-view-wrap');
     this.winnersTotalCars.appendInto('.winners-view');
+    this.winnersTotalCars.elem.innerText = `Winners (${state.winnersTotalCars})`;
     this.winnersPage.appendInto('.winners-view');
+    this.winnersPage.elem.innerText = `Page #${state.winnersPage}`;
     this.winnersTable.appendInto('.winners-view');
+    this.winnersTable.render();
+    pagination.updatePrevNextButtons();
   }
 }
 
