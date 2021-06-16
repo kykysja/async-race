@@ -22,6 +22,7 @@ body {
   background: darkgrey;
   color: blanchedalmond;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  overflow-x: hidden;
 }
 .garage-cars-list {
   padding-inline-start: 0;
@@ -29,9 +30,13 @@ body {
 .page-nav-buttons-wrap {
   margin-bottom: 20px;
 }
-.garage-total-cars {
+.garage-total-cars,
+.winners-total-cars {
   margin-top: 20px;
   margin-bottom: 10px;
+}
+.winners-page {
+  margin-bottom: 25px;
 }
 .garage {
   list-style: none;
@@ -39,7 +44,7 @@ body {
   margin-bottom: 100px;
 }
 .table {
-  margin-bottom: 100px;
+  margin-bottom: 20px;
 }
 .table td,
 .table th {
@@ -49,15 +54,18 @@ body {
 .table th {
   background: rgb(19, 26, 248);
 }
+.table-name {
+  min-width: 220px;
+}
 .table-button {
   cursor: pointer;
   user-select: none;
 }
 .table-button.asc::after {
-  content: '↑';
+  content: ' ↑';
 }
 .table-button.desc::after {
-  content: '↓';
+  content: ' ↓';
 }
 .garage .car {
   width: 100px;
@@ -92,9 +100,7 @@ body {
   height: 36px;
   padding: 10px 20px 10px 0;
 }
-.car {
-  padding: 0px 0 0;
-}
+
 .winner-car > svg {
   width: 70px;
 }
@@ -109,13 +115,18 @@ body {
 .launch-pad {
   display: flex;
 }
-.flag {
+.flag-hidden {
   color: crimson;
   font-size: 50px;
   margin-top: 0px;
-  transform: translateX(-180px);
+  transform: translateX(0px);
   padding-right: 30px;
   widows: 110px;
+  position: relative;
+  right: 150px;
+}
+.flag {
+  opacity: 0;
 }
 .button {
   font-size: 14px;
@@ -199,8 +210,8 @@ body {
   color: rgb(247, 214, 29);
 }
 .message {
-  top: 16%;
-  left: calc(50% - 250px);
+  top: 50%;
+  left: calc(50% - 230px);
   text-align: center;
   display: none;
   position: fixed;
@@ -211,4 +222,76 @@ body {
 }
 .message.visible {
   display: block;
+}
+
+@media (max-width: 1000px) {
+  .message {
+    font-size: 20px;
+    left: calc(50% - 112px);
+  }
+  .table td,
+  .table th {
+    font-size: 15px;
+  }
+  svg {
+    width: 70px;
+    height: 50px;
+  }
+  .flag-hidden {
+    font-size: 25px;
+    right: 110px;
+    opacity: 0;
+  }
+  .flag {
+    position: relative;
+    right: 80px;
+    top: 35px;
+    opacity: 100%;
+  }
+  .icon {
+    font-size: 16px;
+    padding: 2px 4px 0;
+    margin-bottom: 3px;
+  }
+  .control-panel {
+    height: 36px;
+    padding: 10px 20px 0px 0;
+  }
+  .car {
+    height: 20px;
+  }
+  .button {
+    font-size: 12px;
+    width: 78px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-bottom: 3px solid rgb(19, 26, 248);
+  }
+  .garage-menu-button,
+  .winners-menu-button {
+    width: 110px;
+  }
+  .car-name {
+    font-size: 16px;
+
+    display: inline-block;
+    flex-grow: 1;
+  }
+  .general-buttons {
+    display: flex;
+  }
+  .garage-total-cars,
+  .winners-total-cars {
+    font-size: 32px;
+  }
+  .garage-page,
+  .winners-page {
+    font-size: 26px;
+  }
+  .table-name {
+    min-width: 160px;
+  }
+  .form {
+    width: 345px;
+  }
 }

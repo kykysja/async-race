@@ -76,7 +76,6 @@ export const setSortOrder = async (sortBy: string) => {
 
   await state.updateWinnersCars();
   winnersView.render();
-  // document.getElementById('winners-view').innerHTML = renderWinners();
 };
 
 export const deleteWinner = async (id: number) =>

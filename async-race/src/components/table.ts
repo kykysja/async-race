@@ -1,4 +1,3 @@
-// import { generateCarImage } from '../shared/elem-generators';
 import { setSortOrder } from '../shared/apiRequests';
 import { generateCarImage } from '../shared/elem-generators';
 import { state } from '../shared/state';
@@ -16,8 +15,8 @@ export class WinnersTable extends BaseComponent {
     this.elem.innerHTML = `
       <thead>
         <th>№</th>
-        <th style="text-align: center;">Car</th>
-        <th>Name</th>
+        <th style="text-align: center; padding: 0 35px;">Car</th>
+        <th class="table-name">Name</th>
         <th class="table-button table-wins ${
           state.sortBy === 'wins' ? state.sortOrder : ''
         }" id="sort-by-wins">Wins</th>
@@ -42,7 +41,8 @@ export class WinnersTable extends BaseComponent {
           .join('')}
       </tbody>
     `;
-    document.querySelector('table-wins')?.addEventListener('click', () => setSortOrder('wins'));
-    document.querySelector('table-time')?.addEventListener('click', () => setSortOrder('time'));
+
+    document.querySelector('#sort-by-wins')?.addEventListener('click', () => setSortOrder('wins'));
+    document.querySelector('#sort-by-time')?.addEventListener('click', () => setSortOrder('time'));
   }
 }

@@ -10,7 +10,7 @@ export class State {
   winnersTotalCars = 0;
   winnersPage = 1;
   sortBy = 'wins';
-  sortOrder = 'asc';
+  sortOrder = '';
   animation: any;
   selectedCar: Car | null = null;
 

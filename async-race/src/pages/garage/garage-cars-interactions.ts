@@ -40,6 +40,7 @@ export class GarageCarsInteractions extends BaseComponent {
     this.raceControls = new BaseComponent('div', ['race-controls']);
     this.raceBtn = new Button('Race', ['button', 'race-button', 'primary'], 'race-btn');
     this.resetBtn = new Button('Reset', ['button', 'reset-button', 'primary'], 'reset-btn');
+    (this.resetBtn.elem as HTMLButtonElement).disabled = true;
     this.generateBtn = new Button('Generate Cars', ['button', 'generator-button'], 'generator-btn');
 
     this.createBtn.elem.addEventListener('click', (event) => {
@@ -106,6 +107,11 @@ export class GarageCarsInteractions extends BaseComponent {
     (this.updateInputName.elem as HTMLInputElement).disabled = true;
     (this.updateInputColor.elem as HTMLInputElement).disabled = true;
     (this.updateInputName.elem as HTMLButtonElement).disabled = true;
+
+    (this.updateInputName.elem as HTMLInputElement).value = '';
+    (this.updateInputColor.elem as HTMLInputElement).value = '';
+    (this.updateInputName.elem as HTMLButtonElement).value = '';
+
     state.selectedCar = null;
   };
 

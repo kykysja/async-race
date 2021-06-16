@@ -25,6 +25,7 @@ export class WinnersView extends BaseComponent {
     this.winnersPage.elem.innerText = `Page #${state.winnersPage}`;
     this.winnersTable.appendInto('.winners-view');
     this.winnersTable.render();
+
     pagination.updatePrevNextButtons();
   }
 }
