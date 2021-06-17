@@ -117,12 +117,11 @@ export class GarageCarsInteractions extends BaseComponent {
 
   handleRaceBtnClick = async (): Promise<void> => {
     (this.raceBtn.elem as HTMLButtonElement).disabled = true;
+    (this.resetBtn.elem as HTMLButtonElement).disabled = false;
 
     const winner = await race(garage.garageCars.startDriving);
 
     await saveWinner(winner.id, winner.time);
-
-    (this.resetBtn.elem as HTMLButtonElement).disabled = false;
 
     const message = document.querySelector('.message');
     if (message) {
