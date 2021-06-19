@@ -1,17 +1,17 @@
-import { setSortOrder } from '../shared/apiRequests';
-import { generateCarImage } from '../shared/elem-generators';
-import { state } from '../shared/state';
-import { BaseComponent } from './base-component';
+import { request } from '../../api/api-requests';
+import { BaseComponent } from '../../components/base-component';
+import { state } from '../../state/state';
+import { Car } from '../garage/car';
 
 export class WinnersTable extends BaseComponent {
   constructor() {
-    super('table', ['table']);
+    super('table', ['winners-table']);
 
     this.elem.setAttribute('cellspacing', '0');
     this.elem.setAttribute('cellpadding', '0');
   }
 
-  render() {
+  render(): void {
     this.elem.innerHTML = `
       <thead>
         <th>№</th>
@@ -25,13 +25,12 @@ export class WinnersTable extends BaseComponent {
         }" id="sort-by-time">Time</th>
       </thead>
       <tbody>
-
-        ${state
-          .winnersCars!.map(
+        ${state.winnersCars
+          .map(
             (winner, index) => `
           <tr>
             <td>${index + 1}</td>
-            <td class="winner-car">${generateCarImage(winner.car.color)}</td>
+            <td class="winner-car">${Car.generateCarImage(winner.car.color)}</td>
             <td style="margin-right: 15px;">${winner.car.name}</td>
             <td style="text-align: center;">${winner.wins}</td>
             <td style="text-align: center;">${winner.time}</td>
@@ -42,7 +41,11 @@ export class WinnersTable extends BaseComponent {
       </tbody>
     `;
 
-    document.querySelector('#sort-by-wins')?.addEventListener('click', () => setSortOrder('wins'));
-    document.querySelector('#sort-by-time')?.addEventListener('click', () => setSortOrder('time'));
+    document
+      .querySelector('#sort-by-wins')
+      ?.addEventListener('click', () => request.setSortOrder('wins'));
+    document
+      .querySelector('#sort-by-time')
+      ?.addEventListener('click', () => request.setSortOrder('time'));
   }
 }

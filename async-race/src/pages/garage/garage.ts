@@ -1,53 +1,47 @@
 import { BaseComponent } from '../../components/base-component';
-import { state } from '../../shared/state';
-import { GarageCars, handleStartBtnClick, handleStopBtnClick } from './garage-cars';
+import { state } from '../../state/state';
+import { Car } from './car';
+import { Cars } from './cars';
 
 export class Garage extends BaseComponent {
-  garageTotalCars: BaseComponent;
-  garagePage: BaseComponent;
-  garageCars: GarageCars;
-  message: BaseComponent;
+  totalCars: BaseComponent;
+  currentPage: BaseComponent;
+  cars: Cars;
 
   constructor() {
-    super('div', undefined, 'garage');
+    super('div', ['garage'], 'garage');
 
-    this.garageTotalCars = new BaseComponent('h1', ['garage-total-cars']);
-    this.garagePage = new BaseComponent('h2', ['garage-page']);
-    this.garageCars = new GarageCars();
-    this.message = new BaseComponent('p', ['message']);
+    this.totalCars = new BaseComponent('h1', ['garage-total-cars']);
+    this.currentPage = new BaseComponent('h2', ['garage-page']);
+    this.cars = new Cars();
   }
 
   render(): void {
     this.appendInto('.garage-view');
-    this.garageTotalCars.appendInto('#garage');
-    this.garageTotalCars.elem.innerText = `Garage (${state.garageTotalCars})`;
-    this.garagePage.appendInto('#garage');
-    this.garagePage.elem.innerText = `Page #${state.garagePage}`;
-    this.garageCars.appendInto('#garage');
-    this.garageCars.render();
-    this.message.appendInto('.garage-view');
+    this.totalCars.appendInto('.garage');
+    this.totalCars.elem.innerText = `Garage (${state.garageTotalCars})`;
+    this.currentPage.appendInto('.garage');
+    this.currentPage.elem.innerText = `Page #${state.garagePage}`;
+    this.cars.appendInto('.garage');
+    this.cars.render();
 
     const selectCarButtonsElems: NodeListOf<HTMLButtonElement> =
       document.querySelectorAll('.select-button');
-    selectCarButtonsElems.forEach((button) =>
-      button.addEventListener('click', this.garageCars.handleSelectBtnClick)
-    );
+    selectCarButtonsElems.forEach((button) => button.addEventListener('click', Car.select));
+
     const removeCarButtonsElems: NodeListOf<HTMLButtonElement> =
       document.querySelectorAll('.remove-button');
-    removeCarButtonsElems.forEach((button) =>
-      button.addEventListener('click', this.garageCars.removeCar)
-    );
+    removeCarButtonsElems.forEach((button) => button.addEventListener('click', Car.remove));
+
     const startEngineButtonsElems: NodeListOf<HTMLButtonElement> =
       document.querySelectorAll('.start-engine-button');
     startEngineButtonsElems.forEach((button) =>
-      button.addEventListener('click', handleStartBtnClick)
+      button.addEventListener('click', Car.handleStartBtnClick)
     );
     const stopEngineButtonsElems: NodeListOf<HTMLButtonElement> =
       document.querySelectorAll('.stop-engine-button');
     stopEngineButtonsElems.forEach((button) =>
-      button.addEventListener('click', handleStopBtnClick)
+      button.addEventListener('click', Car.handleStopBtnClick)
     );
   }
 }
-
-export const garage = new Garage();

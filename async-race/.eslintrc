@@ -17,7 +17,6 @@
   "plugins": ["@typescript-eslint"],
   "ignorePatterns": ["*.config.js", "node_modules/", "dist/"],
   "rules": {
-    //"top-level-await": "off",
     "@typescript-eslint/lines-between-class-members": "off",
     "@typescript-eslint/indent": "off",
     "no-plusplus": "off",
@@ -32,11 +31,6 @@
     "@typescript-eslint/comma-dangle": "off",
     "import/prefer-default-export": "off",
     "import/no-cycle": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "class-methods-use-this": "off",
-
     "no-param-reassign": [
       "error",
       {

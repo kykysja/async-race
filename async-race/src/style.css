@@ -24,10 +24,10 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   overflow-x: hidden;
 }
-.garage-cars-list {
+.garage-cars {
   padding-inline-start: 0;
 }
-.page-nav-buttons-wrap {
+.navigation-wrap {
   margin-bottom: 20px;
 }
 .garage-total-cars,
@@ -43,15 +43,15 @@ body {
   padding: 0;
   margin-bottom: 100px;
 }
-.table {
+.winners-table {
   margin-bottom: 20px;
 }
-.table td,
-.table th {
+.winners-table td,
+.winners-table th {
   font-size: 20px;
   padding: 8px;
 }
-.table th {
+.winners-table th {
   background: rgb(19, 26, 248);
 }
 .table-name {
@@ -229,8 +229,8 @@ body {
     font-size: 20px;
     left: calc(50% - 112px);
   }
-  .table td,
-  .table th {
+  .winners-table td,
+  .winners-table th {
     font-size: 15px;
   }
   svg {

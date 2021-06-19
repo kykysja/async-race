@@ -2,10 +2,21 @@ export type Car = {
   id: number;
   name: string;
   color: string;
+};
+
+export type CarInfo = {
+  id: number;
+  name: string;
+  color: string;
   position?: number;
   wins?: number;
   time?: number;
   isEngineStarted?: boolean;
+};
+
+export type PageCars = {
+  garageCars: [];
+  garageTotalCars: string | null;
 };
 
 export type Winner = {
@@ -15,16 +26,7 @@ export type Winner = {
   time: number;
 };
 
-export type IdTimeObj = {
-  id: number;
-  time: number;
-};
-
-export type Winners = {
-  [index: number]: WinnerData;
-};
-
-export type WinnerData = {
+export type WinnerInfo = {
   id: number;
   wins: number;
   time: number;
@@ -35,7 +37,29 @@ export type WinnerData = {
   };
 };
 
+export type GetWinner = {
+  id: number;
+  wins: number;
+  time: number;
+};
+
 export type GetWinners = {
-  items: WinnerData[];
-  count: number;
+  winners: WinnerInfo[];
+  winnersTotalCars: string | null;
+};
+
+export type WinnerRaceAll = {
+  id?: number;
+  name?: string;
+  color?: string;
+  position?: number;
+  wins?: number;
+  time: number;
+  isEngineStarted?: boolean;
+};
+
+export type Success = {
+  success: boolean;
+  id: number;
+  time: number;
 };

@@ -1,11 +1,19 @@
-import { BaseComponent } from './base-component';
+export class Input {
+  elem: HTMLInputElement;
 
-export class Input extends BaseComponent {
-  constructor(classes?: string[], id?: string, type?: string, name?: string, innerText?: string) {
-    super('input', classes || undefined, id || undefined);
+  constructor(classes?: string[], id?: string, type?: string, name?: string) {
+    this.elem = document.createElement('input');
+
+    if (classes) this.elem.classList.add(...classes);
+    if (id) this.elem.id = id;
 
     this.elem.setAttribute('type', `${type}`);
     this.elem.setAttribute('name', `${name}`);
-    if (innerText) this.elem.innerText = `${innerText}`;
+  }
+
+  appendInto(selector: string): void {
+    const parentElem = document.querySelector(selector);
+
+    if (parentElem) parentElem.appendChild(this.elem);
   }
 }

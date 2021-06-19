@@ -1,32 +1,32 @@
+import { app } from '../..';
 import { BaseComponent } from '../../components/base-component';
-import { WinnersTable } from '../../components/table';
-import { state } from '../../shared/state';
-import { pagination } from '../pagination';
+import { state } from '../../state/state';
+import { WinnersTable } from './winners-table';
 
 export class WinnersView extends BaseComponent {
-  winnersTotalCars: BaseComponent;
-  winnersPage: BaseComponent;
+  totalCars: BaseComponent;
+  currentPage: BaseComponent;
   winnersTable: WinnersTable;
 
   constructor() {
     super('div', ['winners-view']);
 
     this.elem.style.display = 'none';
-    this.winnersTotalCars = new BaseComponent('h1', ['winners-total-cars']);
-    this.winnersPage = new BaseComponent('h2', ['winners-page']);
+    this.totalCars = new BaseComponent('h1', ['winners-total-cars']);
+    this.currentPage = new BaseComponent('h2', ['winners-page']);
     this.winnersTable = new WinnersTable();
   }
 
   render(): void {
     this.appendInto('.winners-view-wrap');
-    this.winnersTotalCars.appendInto('.winners-view');
-    this.winnersTotalCars.elem.innerText = `Winners (${state.winnersTotalCars})`;
-    this.winnersPage.appendInto('.winners-view');
-    this.winnersPage.elem.innerText = `Page #${state.winnersPage}`;
+    this.totalCars.appendInto('.winners-view');
+    this.totalCars.elem.innerText = `Winners (${state.winnersTotalCars})`;
+    this.currentPage.appendInto('.winners-view');
+    this.currentPage.elem.innerText = `Page #${state.winnersPage}`;
     this.winnersTable.appendInto('.winners-view');
     this.winnersTable.render();
 
-    pagination.updatePrevNextButtons();
+    app.pagination.updateButtonsView(10);
   }
 }
 
