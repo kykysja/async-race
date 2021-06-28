@@ -12,11 +12,16 @@ export class Cars extends BaseComponent {
     if (state.garageCars) {
       const html = state.garageCars
         .map((car) =>
-          Car.generateCar({ id: car.id, name: car.name, color: car.color, isEngineStarted: false })
+          Car.generateCarTemplate({
+            id: car.id,
+            name: car.name,
+            color: car.color,
+            isEngineStarted: false,
+          })
         )
         .join('');
       this.elem.innerHTML = html;
     }
-    app.pagination.updateButtonsView(7);
+    app.pagination.updateButtonsView();
   }
 }

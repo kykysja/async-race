@@ -1,5 +1,6 @@
 // import { app } from '..';
-import { request } from '../api/api-requests';
+import { app } from '..';
+import { api } from '../api/api-requests';
 import { BaseComponent } from '../components/base-component';
 import { Button } from '../components/button';
 import { garageView } from '../pages/garage/garage-view';
@@ -29,13 +30,14 @@ export class Navigation extends BaseComponent {
       winnersView.elem.style.display = 'none';
       garageView.elem.style.display = 'block';
       state.view = 'garage';
+      app.pagination.updateButtonsView();
     });
 
     this.winnersViewBtn.elem.addEventListener('click', async (): Promise<void> => {
       garageView.elem.style.display = 'none';
       winnersView.elem.style.display = 'block';
 
-      await request.updateWinnersCars();
+      await api.updateWinnersCars();
       state.view = 'wins';
       winnersView.render();
     });

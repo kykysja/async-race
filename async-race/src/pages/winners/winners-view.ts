@@ -26,7 +26,7 @@ export class WinnersView extends BaseComponent {
     this.winnersTable.appendInto('.winners-view');
     this.winnersTable.render();
 
-    app.pagination.updateButtonsView(10);
+    app.pagination.updateButtonsView();
   }
 }
 

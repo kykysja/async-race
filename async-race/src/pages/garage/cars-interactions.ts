@@ -1,9 +1,9 @@
 import { app } from '../..';
-import { request } from '../../api/api-requests';
+import { api } from '../../api/api-requests';
 import { BaseComponent } from '../../components/base-component';
 import { Button } from '../../components/button';
 import { Input } from '../../components/input';
-import { Winner } from '../../shared/types';
+import { Success, Winner, WinnerRaceAll } from '../../shared/types';
 import { Utils } from '../../shared/utils';
 import { state } from '../../state/state';
 import { Car } from './car';
@@ -88,9 +88,9 @@ export class CarsInteractions extends BaseComponent {
       color: this.createInputColor.elem.value,
     };
 
-    await request.addCar(car);
-    await request.updateGarageCars();
-    app.pagination.updateButtonsView(7);
+    await api.addCar(car);
+    await api.updateGarageCars();
+    app.pagination.updateButtonsView();
     garageView.garage.render();
 
     this.createInputName.elem.value = '';
@@ -105,11 +105,11 @@ export class CarsInteractions extends BaseComponent {
 
     if (state.selectedCar) {
       if (state.selectedCar.id) {
-        await request.updateCar(state.selectedCar.id, car);
+        await api.updateCar(state.selectedCar.id, car);
       }
     }
-    await request.updateGarageCars();
-    app.pagination.updateButtonsView(7);
+    await api.updateGarageCars();
+    app.pagination.updateButtonsView();
     garageView.garage.render();
 
     this.updateInputName.elem.disabled = true;
@@ -118,17 +118,28 @@ export class CarsInteractions extends BaseComponent {
 
     this.updateInputName.elem.value = '';
     this.updateInputColor.elem.value = '';
-    this.updateInputName.elem.value = '';
 
     state.selectedCar = null;
+  };
+
+  race = async (action: (id: number) => Promise<Success>): Promise<WinnerRaceAll> => {
+    const promises = state.garageCars.map(({ id }) => action(id));
+
+    const winner = await Utils.raceAll(
+      promises,
+      state.garageCars.map((car) => car.id)
+    );
+
+    return winner;
   };
 
   startRacing = async (): Promise<void> => {
     this.raceBtn.elem.disabled = true;
     this.resetBtn.elem.disabled = false;
 
-    const winner = await Utils.race(Car.startDriving);
-    if (winner.id) await request.saveWinner(winner.id, winner.time);
+    const winner = await this.race(Car.startDriving);
+
+    if (winner.id) await api.saveWinner(winner.id, winner.time);
 
     garageView.message.render(winner as Winner);
     garageView.message.elem.classList.toggle('visible', true);
@@ -150,11 +161,11 @@ export class CarsInteractions extends BaseComponent {
 
     await Promise.all(
       cars.map(async (c) => {
-        await request.addCar(c);
+        await api.addCar(c);
       })
     );
 
-    await request.updateGarageCars();
+    await api.updateGarageCars();
 
     garageView.garage.render();
     this.generateBtn.elem.disabled = false;

@@ -1,31 +1,31 @@
 import { winnersView } from '../pages/winners/winners-view';
-import { Car, CarInfo, GetWinner, GetWinners, PageCars, Winner } from '../shared/types';
+import { Car, CarInfo, WinnerBody, Winners, PageCars, Winner } from '../shared/types';
 import { state } from '../state/state';
 
 export class ApiRequests {
-  base: string;
-  garage: string;
-  engine: string;
-  winners: string;
+  baseApiUrl: string;
+  garageApiUrl: string;
+  engineApiUrl: string;
+  winnersApiUrl: string;
 
   constructor() {
-    this.base = 'http://127.0.0.1:3000';
-    this.garage = `${this.base}/garage`;
-    this.engine = `${this.base}/engine`;
-    this.winners = `${this.base}/winners`;
+    this.baseApiUrl = 'http://127.0.0.1:3000';
+    this.garageApiUrl = `${this.baseApiUrl}/garage`;
+    this.engineApiUrl = `${this.baseApiUrl}/engine`;
+    this.winnersApiUrl = `${this.baseApiUrl}/winners`;
   }
 
   getCurrentPageCars = async (page: number, limit = 7): Promise<PageCars> => {
-    const response = await fetch(`${this.garage}?_page=${page}&_limit=${limit}`);
+    const response = await fetch(`${this.garageApiUrl}?_page=${page}&_limit=${limit}`);
 
     return {
       garageCars: await response.json(),
-      garageTotalCars: response.headers.get('X-Total-Count'),
+      garageTotalCars: +response.headers.get('X-Total-Count')!,
     };
   };
 
   addCar = async (body: { name: string; color: string }): Promise<Car> => {
-    const res = await fetch(this.garage, {
+    const res = await fetch(this.garageApiUrl, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -36,11 +36,12 @@ export class ApiRequests {
     return car;
   };
 
-  getCar = async (id: number): Promise<CarInfo> => (await fetch(`${this.garage}/${id}`)).json();
+  getCar = async (id: number): Promise<CarInfo> =>
+    (await fetch(`${this.garageApiUrl}/${id}`)).json();
 
   updateCar = async (id: number, body: { name: string; color: string }): Promise<void> =>
     (
-      await fetch(`${this.garage}/${id}`, {
+      await fetch(`${this.garageApiUrl}/${id}`, {
         method: 'PUT',
         body: JSON.stringify(body),
         headers: {
@@ -50,7 +51,7 @@ export class ApiRequests {
     ).json();
 
   deleteCar = async (id: number): Promise<Car> =>
-    (await fetch(`${this.garage}/${id}`, { method: 'DELETE' })).json();
+    (await fetch(`${this.garageApiUrl}/${id}`, { method: 'DELETE' })).json();
 
   updateGarageCars = async (): Promise<void> => {
     const { garageCars, garageTotalCars } = await this.getCurrentPageCars(state.garagePage);
@@ -59,15 +60,15 @@ export class ApiRequests {
   };
 
   startEngine = async (id: number): Promise<{ velocity: number; distance: number }> =>
-    (await fetch(`${this.engine}?id=${id}&status=started`)).json();
+    (await fetch(`${this.engineApiUrl}?id=${id}&status=started`)).json();
 
   drive = async (id: number): Promise<{ success: boolean }> => {
-    const res = await fetch(`${this.engine}?id=${id}&status=drive`).catch();
+    const res = await fetch(`${this.engineApiUrl}?id=${id}&status=drive`).catch();
     return res.status !== 200 ? { success: false } : { ...(await res.json()) };
   };
 
   stopEngine = async (id: number): Promise<void> =>
-    (await fetch(`${this.engine}?id=${id}&status=stopped`)).json();
+    (await fetch(`${this.engineApiUrl}?id=${id}&status=stopped`)).json();
 
   getSortOrder = (sort: string, order: string): string => {
     if (sort && order) return `&_sort=${sort}&_order=${order}`;
@@ -83,36 +84,34 @@ export class ApiRequests {
   };
 
   deleteWinner = async (id: number): Promise<Winner> =>
-    (await fetch(`${this.winners}/${id}`, { method: 'DELETE' })).json();
+    (await fetch(`${this.winnersApiUrl}/${id}`, { method: 'DELETE' })).json();
 
-  getWinner = async (id: number): Promise<GetWinner> =>
-    (await fetch(`${this.winners}/${id}`)).json();
+  getWinner = async (id: number): Promise<WinnerBody> =>
+    (await fetch(`${this.winnersApiUrl}/${id}`)).json();
 
-  getWinners = async (
-    page: number,
-    sort: string,
-    order: string,
-    limit = 10
-  ): Promise<GetWinners> => {
+  getWinners = async (page: number, sort: string, order: string, limit = 10): Promise<Winners> => {
     const response = await fetch(
-      `${this.winners}?_page=${page}&_limit=${limit}${this.getSortOrder(sort, order)}`
+      `${this.winnersApiUrl}?_page=${page}&_limit=${limit}${this.getSortOrder(sort, order)}`
     );
     const winners = await response.json();
 
     return {
       winners: await Promise.all(
-        winners.map(async (winner: GetWinner) => ({ ...winner, car: await this.getCar(winner.id) }))
+        winners.map(async (winner: WinnerBody) => ({
+          ...winner,
+          car: await this.getCar(winner.id),
+        }))
       ),
-      winnersTotalCars: response.headers.get('X-Total-Count'),
+      winnersTotalCars: +response.headers.get('X-Total-Count')!,
     };
   };
 
   getWinnerStatus = async (id: number): Promise<number> =>
-    (await fetch(`${this.winners}/${id}`)).status;
+    (await fetch(`${this.winnersApiUrl}/${id}`)).status;
 
-  createWinner = async (body: GetWinner): Promise<Winner> =>
+  createWinner = async (body: WinnerBody): Promise<Winner> =>
     (
-      await fetch(this.winners, {
+      await fetch(this.winnersApiUrl, {
         method: 'POST',
         body: JSON.stringify(body),
         headers: {
@@ -121,9 +120,9 @@ export class ApiRequests {
       })
     ).json();
 
-  updateWinner = async (id: number, body: GetWinner): Promise<Winner> =>
+  updateWinner = async (id: number, body: WinnerBody): Promise<Winner> =>
     (
-      await fetch(`${this.winners}/${id}`, {
+      await fetch(`${this.winnersApiUrl}/${id}`, {
         method: 'PUT',
         body: JSON.stringify(body),
         headers: {
@@ -164,4 +163,4 @@ export class ApiRequests {
   };
 }
 
-export const request = new ApiRequests();
+export const api = new ApiRequests();

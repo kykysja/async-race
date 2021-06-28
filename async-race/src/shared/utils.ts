@@ -1,5 +1,5 @@
 import { state } from '../state/state';
-import { WinnerRaceAll } from './types';
+import { Success, WinnerRaceAll } from './types';
 
 export abstract class Utils {
   static models = [
@@ -12,9 +12,11 @@ export abstract class Utils {
     'Porshe',
     'Ford',
     'Lanos',
+    'Audi',
+    'Nissan',
   ];
 
-  static names = ['Model S', 'CLK', '7', 'Camry', 'Combi', '9', 'Corsa', 'DB9', 'Cayene'];
+  static names = ['Model S', 'CLK', '7', 'Camry', 'Combi', '9', 'Corsa', 'DB9', 'Cayene', 'Mondeo'];
 
   static getRandomName = (): string => {
     const model = Utils.models[Math.floor(Math.random() * Utils.models.length)];
@@ -72,14 +74,7 @@ export abstract class Utils {
     return store;
   }
 
-  static raceAll = async (
-    promises: Promise<{
-      success: boolean;
-      id: number;
-      time: number;
-    }>[],
-    ids: number[]
-  ): Promise<WinnerRaceAll> => {
+  static raceAll = async (promises: Promise<Success>[], ids: number[]): Promise<WinnerRaceAll> => {
     const { success, id, time } = await Promise.race(promises);
 
     if (!success) {
@@ -93,22 +88,5 @@ export abstract class Utils {
     }
 
     return { ...state.garageCars.find((car) => car.id === id), time: +(time / 1000).toFixed(2) };
-  };
-
-  static race = async (
-    action: (id: number) => Promise<{
-      success: boolean;
-      id: number;
-      time: number;
-    }>
-  ): Promise<WinnerRaceAll> => {
-    const promises = state.garageCars.map(({ id }) => action(id));
-
-    const winner = await Utils.raceAll(
-      promises,
-      state.garageCars.map((car) => car.id)
-    );
-
-    return winner;
   };
 }

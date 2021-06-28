@@ -1,4 +1,4 @@
-import { request } from '../../api/api-requests';
+import { api } from '../../api/api-requests';
 import { CarInfo, Success } from '../../shared/types';
 import { Utils } from '../../shared/utils';
 import { state } from '../../state/state';
@@ -8,7 +8,7 @@ import { garageView } from './garage-view';
 export abstract class Car {
   static generateCarImage = (color: string): string => carSvg(color);
 
-  static generateCar = (car: CarInfo): string => `
+  static generateCarTemplate = (car: CarInfo): string => `
     <li>
       <div class="general-buttons">
         <button class="button select-button" id="select-car-${car.id}">Select</button>
@@ -37,7 +37,7 @@ export abstract class Car {
   `;
 
   static select = async (event: Event): Promise<void> => {
-    state.selectedCar = await request.getCar(
+    state.selectedCar = await api.getCar(
       +(event.target as HTMLButtonElement).id.split('select-car-')[1]
     );
 
@@ -54,7 +54,7 @@ export abstract class Car {
     startButton.disabled = true;
     startButton.classList.toggle('enabling', true);
 
-    const { velocity, distance } = await request.startEngine(id);
+    const { velocity, distance } = await api.startEngine(id);
     const time = Math.round(distance / velocity);
 
     startButton?.classList.toggle('enabling', false);
@@ -68,7 +68,7 @@ export abstract class Car {
 
     state.animation[id] = Utils.animation(car, htmlDistance, time);
 
-    const { success } = await request.drive(id);
+    const { success } = await api.drive(id);
     if (!success) window.cancelAnimationFrame(state.animation[id].id);
 
     return { success, id, time };
@@ -80,7 +80,7 @@ export abstract class Car {
     stopButton.disabled = true;
     stopButton.classList.toggle('enabling', true);
 
-    await request.stopEngine(id);
+    await api.stopEngine(id);
 
     stopButton.classList.toggle('enabling', false);
 
@@ -96,9 +96,9 @@ export abstract class Car {
   static remove = async (event: Event): Promise<void> => {
     const id = +(event.target as HTMLButtonElement).id.split('remove-car-')[1];
 
-    await request.deleteCar(id);
-    await request.deleteWinner(id);
-    await request.updateGarageCars();
+    await api.deleteCar(id);
+    await api.deleteWinner(id);
+    await api.updateGarageCars();
     garageView.garage.render();
   };
 

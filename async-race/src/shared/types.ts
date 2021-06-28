@@ -16,7 +16,7 @@ export type CarInfo = {
 
 export type PageCars = {
   garageCars: [];
-  garageTotalCars: string | null;
+  garageTotalCars: number | null;
 };
 
 export type Winner = {
@@ -37,15 +37,15 @@ export type WinnerInfo = {
   };
 };
 
-export type GetWinner = {
+export type WinnerBody = {
   id: number;
   wins: number;
   time: number;
 };
 
-export type GetWinners = {
+export type Winners = {
   winners: WinnerInfo[];
-  winnersTotalCars: string | null;
+  winnersTotalCars: number | null;
 };
 
 export type WinnerRaceAll = {

@@ -1,4 +1,4 @@
-import { request } from '../api/api-requests';
+import { api } from '../api/api-requests';
 import { BaseComponent } from '../components/base-component';
 import { Button } from '../components/button';
 import { garageView } from '../pages/garage/garage-view';
@@ -27,16 +27,19 @@ export class Pagination extends BaseComponent {
     this.nextBtn.appendInto('.pagination');
   }
 
-  updateButtonsView(pageLimit: number): void {
+  updateButtonsView(): void {
     let currentPage: number;
     let totalCars: number;
+    let pageLimit: number;
 
     if (state.view === 'garage') {
       currentPage = state.garagePage;
       totalCars = state.garageTotalCars;
+      pageLimit = 7;
     } else {
       currentPage = state.winnersPage;
       totalCars = state.winnersTotalCars;
+      pageLimit = 10;
     }
     if (currentPage * pageLimit < totalCars) {
       this.nextBtn.elem.disabled = false;
@@ -53,12 +56,12 @@ export class Pagination extends BaseComponent {
   renderNextPage = async (): Promise<void> => {
     if (state.view === 'garage') {
       state.garagePage++;
-      await request.updateGarageCars();
+      await api.updateGarageCars();
       garageView.garage.render();
     }
     if (state.view === 'wins') {
       state.winnersPage++;
-      await request.updateWinnersCars();
+      await api.updateWinnersCars();
       winnersView.render();
     }
   };
@@ -66,12 +69,12 @@ export class Pagination extends BaseComponent {
   renderPrevPage = async (): Promise<void> => {
     if (state.view === 'garage') {
       state.garagePage--;
-      await request.updateGarageCars();
+      await api.updateGarageCars();
       garageView.garage.render();
     }
     if (state.view === 'wins') {
       state.winnersPage--;
-      await request.updateWinnersCars();
+      await api.updateWinnersCars();
       winnersView.render();
     }
   };

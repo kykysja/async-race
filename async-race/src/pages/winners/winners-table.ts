@@ -1,4 +1,4 @@
-import { request } from '../../api/api-requests';
+import { api } from '../../api/api-requests';
 import { BaseComponent } from '../../components/base-component';
 import { state } from '../../state/state';
 import { Car } from '../garage/car';
@@ -43,9 +43,9 @@ export class WinnersTable extends BaseComponent {
 
     document
       .querySelector('#sort-by-wins')
-      ?.addEventListener('click', () => request.setSortOrder('wins'));
+      ?.addEventListener('click', () => api.setSortOrder('wins'));
     document
       .querySelector('#sort-by-time')
-      ?.addEventListener('click', () => request.setSortOrder('time'));
+      ?.addEventListener('click', () => api.setSortOrder('time'));
   }
 }
