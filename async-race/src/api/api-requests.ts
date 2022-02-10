@@ -9,7 +9,7 @@ export class ApiRequests {
   winnersApiUrl: string;
 
   constructor() {
-    this.baseApiUrl = 'http://127.0.0.1:3000';
+    this.baseApiUrl = 'https://kykysja-async-race-api.herokuapp.com';
     this.garageApiUrl = `${this.baseApiUrl}/garage`;
     this.engineApiUrl = `${this.baseApiUrl}/engine`;
     this.winnersApiUrl = `${this.baseApiUrl}/winners`;

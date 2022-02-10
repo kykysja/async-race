@@ -8,5 +8,8 @@ export class WinsMessage extends BaseComponent {
 
   render(winner: Winner): void {
     this.elem.innerHTML = `${winner.name} went first (${winner.time}s)!`;
+    setTimeout(() => {
+      this.elem.innerHTML = '';
+    }, 3500);
   }
 }
